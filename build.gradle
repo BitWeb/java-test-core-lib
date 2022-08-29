@@ -1,0 +1,89 @@
+buildscript {
+    ext {
+        springBootVersion = '2.6.+'
+        springVersion = '5.+'
+        lombokVersion = '1.18.+'
+        mockitoVersion = '4.4.+'
+        retrofitVersion = '2.9.0'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.owasp:dependency-check-gradle:6.5.3'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'jacoco'
+    id 'java-library'
+    id 'maven-publish'
+    id "org.owasp.dependencycheck" version "6.5.3"
+}
+
+group 'ee.bitweb'
+version '1.0.0'
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        maven {
+            name 'nexus'
+            url "https://nexus.bitweb.ee/repository/maven-public/"
+            credentials {
+                username = project.repoUser
+                password = project.repoPassword
+            }
+        }
+    }
+}
+
+jar {
+    from sourceSets.main.allSource
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    testCompileOnly {
+        extendsFrom testAnnotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+
+    // https://mvnrepository.com/artifact/org.mock-server/mockserver-netty
+    implementation ("org.mock-server:mockserver-netty:5.11.2") {
+        exclude group: 'junit', module: 'junit'
+    }
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springBootVersion}"
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "${springBootVersion}"
+
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+task copyDependencies(type: Copy) {
+    from configurations.annotationProcessor
+    into './build/dependencies'
+}
