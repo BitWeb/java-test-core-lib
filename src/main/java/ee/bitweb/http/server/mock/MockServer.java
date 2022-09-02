@@ -1,13 +1,13 @@
 package ee.bitweb.http.server.mock;
 
+import io.netty.handler.codec.http.HttpMethod;
 import lombok.NoArgsConstructor;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.*;
 import org.mockserver.integration.ClientAndServer;
-import org.mockserver.model.Header;
-import org.mockserver.model.HttpRequest;
-import org.mockserver.model.HttpResponse;
-import org.springframework.http.HttpMethod;
+import org.mockserver.model.*;
+
 import static org.mockserver.model.HttpResponse.response;
 
 @NoArgsConstructor
@@ -28,6 +28,30 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
     public MockServer(HttpMethod method, String path) {
         this.method = method;
         this.path = path;
+    }
+
+    public static MockServer post(String path) {
+        return new MockServer(HttpMethod.POST, path);
+    }
+
+    public static MockServer get(String path) {
+        return new MockServer(HttpMethod.GET, path);
+    }
+
+    public static MockServer put(String path) {
+        return new MockServer(HttpMethod.PUT, path);
+    }
+
+    public static MockServer patch(String path) {
+        return new MockServer(HttpMethod.PATCH, path);
+    }
+
+    public static MockServer delete(String path) {
+        return new MockServer(HttpMethod.DELETE, path);
+    }
+
+    public static MockServer head(String path) {
+        return new MockServer(HttpMethod.HEAD, path);
     }
 
     public Integer getPort() {
@@ -53,16 +77,30 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
         server.reset();
     }
 
-    public void mock(HttpRequest request, HttpResponse response) {
+    public Verification mock(HttpRequest request, HttpResponse response) {
         server.when(request).respond(response);
+
+        return new Verification(server, request);
+    }
+
+    public Verification mock(HttpResponse response) {
+        return mock(requestBuilder(), response);
     }
 
     public HttpResponse responseBuilder(int statusCode) {
-        return response()
+        return responseBuilder(statusCode, null);
+    }
+
+    public HttpResponse responseBuilder(int statusCode, JSONObject body) {
+        HttpResponse response = response()
                 .withStatusCode(statusCode)
-                .withHeaders(
-                        new Header("Content-Type", "application/json; charset=utf-8")
-                );
+                .withHeaders(new Header("Content-Type", MediaType.APPLICATION_JSON_UTF_8.toString()));
+
+        if (body != null) {
+            response.withBody(body.toString());
+        }
+
+        return response;
     }
 
     public HttpRequest requestBuilder() {
@@ -78,11 +116,23 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
     }
 
     public HttpRequest requestBuilder(HttpMethod method, String path) {
+        return requestBuilder(method, path, null);
+    }
+
+    public HttpRequest requestBuilder(JSONObject body) {
+        return requestBuilder(method, path, body);
+    }
+
+    public HttpRequest requestBuilder(HttpMethod method, String path, JSONObject body) {
         Assertions.assertNotNull(method);
         Assertions.assertNotNull(path);
 
-        return HttpRequest.request()
-                .withPath(path)
-                .withMethod(method.name());
+        HttpRequest request = HttpRequest.request().withPath(path).withMethod(method.name());
+
+        if (body != null) {
+            request.withBody(new JsonBody(body.toString()));
+        }
+
+        return request;
     }
 }

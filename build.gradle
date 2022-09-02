@@ -1,11 +1,4 @@
 buildscript {
-    ext {
-        springBootVersion = '2.6.+'
-        springVersion = '5.+'
-        lombokVersion = '1.18.+'
-        mockitoVersion = '4.4.+'
-        retrofitVersion = '2.9.0'
-    }
     repositories {
         mavenCentral()
     }
@@ -23,7 +16,8 @@ plugins {
 }
 
 group 'ee.bitweb'
-version '0.0.1'
+version '0.0.2-SNAPSHOT'
+sourceCompatibility = '11'
 
 publishing {
     publications {
@@ -62,21 +56,21 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
 
     // https://mvnrepository.com/artifact/org.mock-server/mockserver-netty
-    implementation ("org.mock-server:mockserver-netty:5.11.2") {
+    implementation ("org.mock-server:mockserver-netty:5.+") {
         exclude group: 'junit', module: 'junit'
     }
 
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: "${springBootVersion}"
+    // https://mvnrepository.com/artifact/org.json/json
+    implementation group: 'org.json', name: 'json', version: '+'
 
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-test
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: "${springBootVersion}"
+    // https://mvnrepository.com/artifact/org.springframework/spring-test
+    implementation group: 'org.springframework', name: 'spring-test', version: '5.+'
 
-    implementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    implementation 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+    implementation 'org.junit.jupiter:junit-jupiter-api:5.+'
+    implementation 'org.junit.jupiter:junit-jupiter-engine:5.+'
 }
 
 test {

@@ -13,6 +13,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @NoArgsConstructor(access= AccessLevel.PRIVATE)
 public class ResponseAssertions {
 
+    public static void assertUnauthorizedResponse(ResultActions actions) throws Exception {
+        actions.andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$").doesNotExist());
+    }
+
+    public static void assertForbidden(ResultActions actions) throws Exception {
+        actions.andExpect(status().isForbidden())
+                .andExpect(jsonPath("$", aMapWithSize(2)))
+                .andExpect(jsonPath("$.id", not(blankString())))
+                .andExpect(jsonPath("$.message", is(nullValue())));
+    }
+
     public static void assertAccessDeniedResponse(ResultActions actions) throws Exception {
         actions.andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$", aMapWithSize(2)))
@@ -134,16 +146,17 @@ public class ResponseAssertions {
     private static void assertCriterias(ResultActions actions, List<Criteria> criterias) throws Exception {
         for (int i = 0; i < criterias.size(); i++) {
             Criteria criteria = criterias.get(i);
-            actions.andExpect(jsonPath("$.criteria[" + i + "].field", is(criteria.getField())));
-            actions.andExpect(jsonPath("$.criteria[" + i + "].value", is(criteria.getValue())));
+            actions.andExpect(jsonPath("$.criteria[" + i + "]", aMapWithSize(2)))
+                    .andExpect(jsonPath("$.criteria[" + i + "].field", is(criteria.getField())))
+                    .andExpect(jsonPath("$.criteria[" + i + "].value", is(criteria.getValue())));
         }
     }
-
 
     private static void assertErrors(ResultActions actions, List<Error> errors) throws Exception {
         for (int i = 0; i < errors.size(); i++) {
             Error error = errors.get(i);
-            actions.andExpect(jsonPath("$.errors[" + i + "].field", is(error.getField())))
+            actions.andExpect(jsonPath("$.errors[" + i + "]", aMapWithSize(3)))
+                    .andExpect(jsonPath("$.errors[" + i + "].field", is(error.getField())))
                     .andExpect(jsonPath("$.errors[" + i + "].reason", is(error.getReason())))
                     .andExpect(jsonPath("$.errors[" + i + "].message", is(error.getMessage())));
         }

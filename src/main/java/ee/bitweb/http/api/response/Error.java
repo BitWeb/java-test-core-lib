@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public class Error {
+
     private final String field;
     private final String reason;
     private final String message;
@@ -31,6 +32,22 @@ public class Error {
                 field,
                 "Positive",
                 "must be greater than 0"
+        );
+    }
+
+    public static Error min(String field, int minimum) {
+        return new Error(
+                field,
+                "Min",
+                "must be greater than or equal to " + minimum
+        );
+    }
+
+    public static Error max(String field, int minimum) {
+        return new Error(
+                field,
+                "Max",
+                "must be less than or equal to " + minimum
         );
     }
 
