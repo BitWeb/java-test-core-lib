@@ -32,6 +32,14 @@ public class ResponseAssertions {
                 .andExpect(jsonPath("$.message", is("ACCESS_DENIED")));
     }
 
+    public static void assertValidationErrorResponseHasErrors(ResultActions actions) throws Exception {
+        actions.andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$", aMapWithSize(3)))
+                .andExpect(jsonPath("$.id", not(blankString())))
+                .andExpect(jsonPath("$.message", is("INVALID_ARGUMENT")))
+                .andExpect(jsonPath("$.errors", hasSize(greaterThan(0))));
+    }
+
     public static void assertValidationErrorResponse(ResultActions actions, Error expectedError) throws Exception {
         assertValidationErrorResponse(actions, List.of(expectedError));
     }

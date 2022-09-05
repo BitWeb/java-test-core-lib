@@ -51,6 +51,17 @@ public class Error {
         );
     }
 
+    public static Error size(String field, int min, int max) {
+        return new Error(
+                field,
+                "Size",
+                String.format(
+                        "size must be between %s and %s",
+                        min,
+                        max
+                )
+        );
+    }
     public static Error genericInvalidFormat(String field, String value) {
         return new Error(
                 field,
