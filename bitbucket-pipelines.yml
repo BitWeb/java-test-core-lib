@@ -17,5 +17,4 @@ definitions:
 pipelines:
   branches:
     master:
-      - step: *testLint
       - step: *buildAndPublish
