@@ -29,4 +29,5 @@ pipelines:
       - step: *build
   branches:
     master:
+      - step: *build
       - step: *buildAndPublish
