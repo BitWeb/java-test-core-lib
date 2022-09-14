@@ -41,14 +41,6 @@ jar {
     from sourceSets.main.allSource
 }
 
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    testCompileOnly {
-        extendsFrom testAnnotationProcessor
-    }
-}
 
 repositories {
     mavenCentral()
@@ -73,11 +65,17 @@ dependencies {
     implementation 'org.junit.jupiter:junit-jupiter-engine:5.+'
 }
 
-test {
-    useJUnitPlatform()
-}
-
 task copyDependencies(type: Copy) {
     from configurations.annotationProcessor
     into './build/dependencies'
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+    testCompileOnly {
+        extendsFrom testAnnotationProcessor
+    }
+    deployerJars
 }
