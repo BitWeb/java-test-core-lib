@@ -5,6 +5,15 @@ clone:
 
 definitions:
   steps:
+    - step: &build
+        name: Build
+        caches:
+          - gradle
+        script:
+          - ./deploy/injectGradleCredentials.sh "$NEXUS_USERNAME" "$NEXUS_PASSWORD" "gradle.properties"
+          - gradle jar --no-daemon
+        artifacts:
+          - build/libs/*.jar
     - step: &buildAndPublish
         name: Build and publish
         trigger: manual
@@ -15,6 +24,9 @@ definitions:
           - gradle publish --no-daemon
 
 pipelines:
+  pull-requests:
+    '**':
+      - step: *build
   branches:
     master:
       - step: *buildAndPublish
