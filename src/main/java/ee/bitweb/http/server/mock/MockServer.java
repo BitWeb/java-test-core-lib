@@ -88,9 +88,7 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
     }
 
     public Verification mock(HttpRequest request, HttpResponse response) {
-        server.when(request).respond(response);
-
-        return new Verification(server, request);
+        return mock(request, response, 1);
     }
 
     public Verification mock(HttpResponse response) {
