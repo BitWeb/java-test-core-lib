@@ -92,7 +92,7 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
     }
 
     public Verification mock(HttpResponse response) {
-        return mock(requestBuilder(), response);
+        return mock(requestBuilder(), response, 1);
     }
 
     public HttpResponse responseBuilder(int statusCode) {
