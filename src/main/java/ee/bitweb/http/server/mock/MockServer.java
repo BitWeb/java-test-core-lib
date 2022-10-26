@@ -4,10 +4,14 @@ import io.netty.handler.codec.http.HttpMethod;
 import lombok.NoArgsConstructor;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.extension.*;
+import org.junit.jupiter.api.extension.AfterAllCallback;
+import org.junit.jupiter.api.extension.BeforeAllCallback;
+import org.junit.jupiter.api.extension.BeforeEachCallback;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.*;
 
+import static org.mockserver.matchers.Times.exactly;
 import static org.mockserver.model.HttpResponse.response;
 
 @NoArgsConstructor
@@ -69,7 +73,7 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
 
     @Override
     public void beforeAll(ExtensionContext context) {
-        server = ClientAndServer.startClientAndServer(0);;
+        server = ClientAndServer.startClientAndServer(0);
     }
 
     @Override
@@ -77,14 +81,18 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
         server.reset();
     }
 
-    public Verification mock(HttpRequest request, HttpResponse response) {
-        server.when(request).respond(response);
+    public Verification mock(HttpRequest request, HttpResponse response, int times) {
+        server.when(request, exactly(times)).respond(response);
 
         return new Verification(server, request);
     }
 
+    public Verification mock(HttpRequest request, HttpResponse response) {
+        return mock(request, response, 1);
+    }
+
     public Verification mock(HttpResponse response) {
-        return mock(requestBuilder(), response);
+        return mock(requestBuilder(), response, 1);
     }
 
     public HttpResponse responseBuilder(int statusCode) {

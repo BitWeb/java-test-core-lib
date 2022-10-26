@@ -66,6 +66,9 @@ Example usage:
         );
 ```
 
+### 1.1.0
+MockServer.mock(HttpRequest request, HttpResponse response, int times) for subsequent requests to same endpoint with different response expectations
+
 ### 1.0.0
 Definitions of Error messages
 
