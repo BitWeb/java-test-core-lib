@@ -8,6 +8,18 @@ Introducing new class `ee.bitweb.http.server.mock.MockServer` which enables for 
 If registered as a JUnit extension, it will control the typical lifecycle of the ClientAndServer class for each class.
 Server instance is started on random port and it can be injected to your properties for seamless integration. 
 
+### Memory footprint
+
+Using MockServer for each test class can and will affect Spring context, since each Mock Server injects own properties into it. 
+This is dirty the context and force Spring to rebuild the context. Contexts are held in a Context Cache. 
+For a large enough application the size of the cache can force the heap memory to run out. 
+Default size of the cache is 32. If you start experiencing memory issues, it is highly advisible to reduce the cache size to 2.   
+One cache slot is reserved for context that is not dirtied by the test and second one is held for dirtied context. Latter 
+will be overridden in the cache. 
+
+To reduce the cache size, create a spring.properties file in test scope resources directory. Inside that file add property
+`spring.test.context.cache.maxSize=2`. 
+
 ### Example of general setup
 
 ```
@@ -65,6 +77,9 @@ Example usage:
                 )
         );
 ```
+### 1.2.0
+
+Added new builder methods to MockServer class for more convenient usage. 
 
 ### 1.1.0
 MockServer.mock(HttpRequest request, HttpResponse response, int times) for subsequent requests to same endpoint with different response expectations
