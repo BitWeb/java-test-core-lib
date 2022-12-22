@@ -2,6 +2,7 @@ package ee.bitweb.http.server.mock;
 
 import io.netty.handler.codec.http.HttpMethod;
 import lombok.NoArgsConstructor;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.AfterAllCallback;
@@ -96,20 +97,34 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
     }
 
     public HttpResponse responseBuilder(int statusCode) {
-        return responseBuilder(statusCode, null);
+        return response()
+                .withStatusCode(statusCode);
     }
 
     public HttpResponse responseBuilder(int statusCode, JSONObject body) {
-        HttpResponse response = response()
-                .withStatusCode(statusCode)
-                .withHeaders(new Header("Content-Type", MediaType.APPLICATION_JSON_UTF_8.toString()));
+        return responseBuilder(statusCode, body.toString(), MediaType.APPLICATION_JSON_UTF_8);
+    }
+
+    public HttpResponse responseBuilder(int statusCode, JSONArray body) {
+        return responseBuilder(statusCode, body.toString(), MediaType.APPLICATION_JSON_UTF_8);
+    }
+
+    public HttpResponse responseBuilder(int statusCode, String body) {
+        return responseBuilder(statusCode, body,  MediaType.TEXT_PLAIN);
+    }
+
+    public HttpResponse responseBuilder(int statusCode, String body, MediaType mediaType) {
+        HttpResponse response = responseBuilder(statusCode);
+
+        response.withHeaders(new Header("Content-Type", mediaType.toString()));
 
         if (body != null) {
-            response.withBody(body.toString());
+            response.withBody(body);
         }
 
         return response;
     }
+
 
     public HttpRequest requestBuilder() {
         return requestBuilder(method, path);
@@ -124,7 +139,10 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
     }
 
     public HttpRequest requestBuilder(HttpMethod method, String path) {
-        return requestBuilder(method, path, null);
+        Assertions.assertNotNull(method);
+        Assertions.assertNotNull(path);
+
+        return HttpRequest.request().withPath(path).withMethod(method.name());
     }
 
     public HttpRequest requestBuilder(JSONObject body) {
@@ -132,13 +150,30 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
     }
 
     public HttpRequest requestBuilder(HttpMethod method, String path, JSONObject body) {
-        Assertions.assertNotNull(method);
-        Assertions.assertNotNull(path);
-
-        HttpRequest request = HttpRequest.request().withPath(path).withMethod(method.name());
+        HttpRequest request = requestBuilder(method, path);
 
         if (body != null) {
             request.withBody(new JsonBody(body.toString()));
+        }
+
+        return request;
+    }
+
+    public HttpRequest requestBuilder(HttpMethod method, String path, JSONArray body) {
+        HttpRequest request = requestBuilder(method, path);
+
+        if (body != null) {
+            request.withBody(new JsonBody(body.toString()));
+        }
+
+        return request;
+    }
+
+    public HttpRequest requestBuilder(HttpMethod method, String path, String body) {
+        HttpRequest request = requestBuilder(method, path);
+
+        if (body != null) {
+            request.withBody(new StringBody(body));
         }
 
         return request;

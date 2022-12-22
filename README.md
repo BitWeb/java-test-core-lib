@@ -65,6 +65,9 @@ Example usage:
                 )
         );
 ```
+### 1.2.0
+
+Added new builder methods to MockServer class for more convenient usage. 
 
 ### 1.1.0
 MockServer.mock(HttpRequest request, HttpResponse response, int times) for subsequent requests to same endpoint with different response expectations
