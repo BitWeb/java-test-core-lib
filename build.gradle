@@ -16,7 +16,7 @@ plugins {
 }
 
 group 'ee.bitweb'
-version '1.2.1'
+version '1.2.2'
 sourceCompatibility = '11'
 
 publishing {
@@ -41,14 +41,13 @@ jar {
     from sourceSets.main.allSource
 }
 
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.+'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
 
     // https://mvnrepository.com/artifact/org.mock-server/mockserver-netty
     implementation ("org.mock-server:mockserver-netty:5.14.0") {
@@ -56,13 +55,16 @@ dependencies {
     }
 
     // https://mvnrepository.com/artifact/org.json/json
-    implementation group: 'org.json', name: 'json', version: '+'
+    implementation group: 'org.json', name: 'json', version: '20230227'
 
     // https://mvnrepository.com/artifact/org.springframework/spring-test
-    implementation group: 'org.springframework', name: 'spring-test', version: '5.+'
+    implementation group: 'org.springframework', name: 'spring-test', version: '5.3.28'
 
-    implementation 'org.junit.jupiter:junit-jupiter-api:5.+'
-    implementation 'org.junit.jupiter:junit-jupiter-engine:5.+'
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.3'
+
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.3'
 }
 
 task copyDependencies(type: Copy) {

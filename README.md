@@ -77,6 +77,11 @@ Example usage:
                 )
         );
 ```
+
+### 1.2.2
+
+Fixed all dependency versions
+
 ### 1.2.1
 
 Fixed Mock Server Netty dependency from 5.+ to 5.14 since 5.15 injects dependency for slf4j 2 which is not supported in many 

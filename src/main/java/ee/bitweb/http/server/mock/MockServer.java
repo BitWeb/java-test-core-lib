@@ -139,8 +139,8 @@ public class MockServer implements BeforeAllCallback, AfterAllCallback, BeforeEa
     }
 
     public HttpRequest requestBuilder(HttpMethod method, String path) {
-        Assertions.assertNotNull(method);
-        Assertions.assertNotNull(path);
+        Assertions.assertNotNull(method, "Please specify method");
+        Assertions.assertNotNull(path, "Please specify path");
 
         return HttpRequest.request().withPath(path).withMethod(method.name());
     }
