@@ -47,7 +47,7 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
 
     // https://mvnrepository.com/artifact/org.mock-server/mockserver-netty
     implementation ("org.mock-server:mockserver-netty:5.14.0") {
