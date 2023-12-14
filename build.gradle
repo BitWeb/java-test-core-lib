@@ -10,9 +10,8 @@ buildscript {
 plugins {
     id 'java'
     id 'jacoco'
-    id 'java-library'
-    id 'maven-publish'
     id "org.owasp.dependencycheck" version "7.4.4"
+    id "io.github.gradle-nexus.publish-plugin" version "1.3.0"
 }
 
 group 'ee.bitweb'
@@ -20,27 +19,9 @@ version '2.0.0'
 java {
     sourceCompatibility = '17'
 }
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-        }
-    }
-    repositories {
-        maven {
-            name 'nexus'
-            url "https://nexus.bitweb.ee/repository/maven-public/"
-            credentials {
-                username = project.repoUser
-                password = project.repoPassword
-            }
-        }
-    }
-}
 
-jar {
-    from sourceSets.main.allSource
-}
+apply from: "sonarcloud.gradle"
+apply from: "library.gradle"
 
 repositories {
     mavenCentral()

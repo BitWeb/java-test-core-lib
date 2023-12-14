@@ -1,0 +1,72 @@
+apply plugin: 'java-library'
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+apply plugin: 'io.github.gradle-nexus.publish-plugin'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifactId = 'spring-test-core'
+            from components.java
+            pom {
+                name = 'Bitweb Java Test Library'
+                description = 'Bitweb Spring Boot Java Test Library'
+                url = 'https://github.com/BitWeb/java-test-core-lib'
+                //properties = []
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url = 'https://github.com/BitWeb/java-test-core-lib/blob/main/LICENSE'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'erichjag'
+                        name = 'Erich Jagomägis'
+                        email = 'erich@bitweb.ee'
+                    }
+                }
+                scm {
+                    connection = 'scm:https://github.com/BitWeb/java-test-core-lib.git'
+                    developerConnection = 'scm:git@github.com:BitWeb/java-test-core-lib.git'
+                    url = 'https://github.com/BitWeb/java-test-core-lib'
+                }
+            }
+        }
+    }
+}
+
+nexusPublishing {
+    repositories {
+        if (project.hasProperty('mavenCentralUsername') & project.hasProperty('mavenCentralPassword')) {
+            sonatype {
+                nexusUrl.set(uri("https://oss.sonatype.org/service/local/"))
+                snapshotRepositoryUrl.set(uri("https://oss.sonatype.org/content/repositories/snapshots"))
+                username = project.mavenCentralUsername
+                password = project.mavenCentralPassword
+            }
+        }
+    }
+}
+
+signing {
+    def signingKey = findProperty("signingKey")
+    def signingPassword = findProperty("signingPassword")
+    useInMemoryPgpKeys(signingKey, signingPassword)
+    sign publishing.publications.mavenJava
+}
+
+javadoc {
+    if(JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+jar {
+    from sourceSets.main.allSource
+}
