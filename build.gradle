@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'org.owasp:dependency-check-gradle:6.5.3'
+        classpath 'org.owasp:dependency-check-gradle:7.4.4'
     }
 }
 
@@ -12,13 +12,14 @@ plugins {
     id 'jacoco'
     id 'java-library'
     id 'maven-publish'
-    id "org.owasp.dependencycheck" version "6.5.3"
+    id "org.owasp.dependencycheck" version "7.4.4"
 }
 
 group 'ee.bitweb'
-version '1.2.2'
-sourceCompatibility = '11'
-
+version '2.0.0'
+java {
+    sourceCompatibility = '17'
+}
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -47,18 +48,18 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.26'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
 
     // https://mvnrepository.com/artifact/org.mock-server/mockserver-netty
-    implementation ("org.mock-server:mockserver-netty:5.14.0") {
+    implementation ("org.mock-server:mockserver-netty:5.15.0") {
         exclude group: 'junit', module: 'junit'
     }
 
     // https://mvnrepository.com/artifact/org.json/json
-    implementation group: 'org.json', name: 'json', version: '20230227'
+    implementation group: 'org.json', name: 'json', version: '20231013'
 
     // https://mvnrepository.com/artifact/org.springframework/spring-test
-    implementation group: 'org.springframework', name: 'spring-test', version: '5.3.28'
+    implementation group: 'org.springframework', name: 'spring-test', version: '6.0.14'
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.3'
