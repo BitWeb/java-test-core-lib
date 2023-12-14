@@ -55,9 +55,9 @@ nexusPublishing {
 }
 
 signing {
-    def signingKey = findProperty("signingKey")
-    def signingPassword = findProperty("signingPassword")
-    useInMemoryPgpKeys(signingKey, signingPassword)
+    if (project.hasProperty("signingKey") & project.hasProperty("signingPassword")) {
+        useInMemoryPgpKeys(project.signingKey, project.signingPassword)
+    }
     sign publishing.publications.mavenJava
 }
 
