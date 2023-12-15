@@ -19,8 +19,8 @@ jobs:
           gradle-version: 8.5
       - name: Publish packages
         env:
-          ORG_GRADLE_PROJECT_mavenCentralUsername=${{ secrets.MAVEN_CENTRAL_USERNAME }}
-          ORG_GRADLE_PROJECT_mavenCentralPassword=${{ secrets.MAVEN_CENTRAL_PASSWORD }}
-          ORG_GRADLE_PROJECT_signingKey=${{ secrets.MAVEN_CENTRAL_SIGNING_KEY }}
-          ORG_GRADLE_PROJECT_signingPassword=${{ secrets.MAVEN_CENTRAL_SIGNING_KEY_PASSWORD }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingKey: ${{ secrets.MAVEN_CENTRAL_SIGNING_KEY }}
+          ORG_GRADLE_PROJECT_signingPassword: ${{ secrets.MAVEN_CENTRAL_SIGNING_KEY_PASSWORD }}
         run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
