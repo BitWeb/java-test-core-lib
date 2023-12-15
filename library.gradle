@@ -17,7 +17,6 @@ publishing {
                 name = 'Bitweb Java Test Library'
                 description = 'Bitweb Spring Boot Java Test Library'
                 url = 'https://github.com/BitWeb/java-test-core-lib'
-                //properties = []
                 licenses {
                     license {
                         name = 'MIT License'
@@ -26,9 +25,19 @@ publishing {
                 }
                 developers {
                     developer {
-                        id = 'erichjag'
+                        id = 'Jorich'
                         name = 'Erich Jagomägis'
                         email = 'erich@bitweb.ee'
+                    }
+                    developer {
+                        id = 'rammrain'
+                        name = 'Rain Ramm'
+                        email = 'rain@bitweb.ee'
+                    }
+                    developer {
+                        id = 'pr11t'
+                        name = 'Priit Pärkson'
+                        email = 'priit.parkson@bitweb.ee'
                     }
                 }
                 scm {
