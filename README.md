@@ -1,14 +1,28 @@
-# Bitweb Test Library 
+# Bitweb Spring Core Test library 
 
-Given library has helper functions that make it abit easier to test various functionality 
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/ee.bitweb/spring-test-core/badge.svg)](https://mvnrepository.com/artifact/ee.bitweb/spring-test-core)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=BitWeb_java-test-core-lib&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=BitWeb_java-test-core-lib)
 
-## Mock server
+Given library has helper functions that make it a bit easier to test various functionality.
+
+## Usage
+
+```
+// https://mvnrepository.com/artifact/ee.bitweb/spring-test-core
+testImplementation group: 'ee.bitweb', name: 'spring-test-core', version: '2.0.0'
+```
+
+Review available versions in [Maven Central](https://mvnrepository.com/artifact/ee.bitweb/spring-test-core).
+
+## Documentation
+
+### Mock server
 
 Introducing new class `ee.bitweb.http.server.mock.MockServer` which enables for easier handling of `org.mockserver.integration.ClientAndServer`.
 If registered as a JUnit extension, it will control the typical lifecycle of the ClientAndServer class for each class.
 Server instance is started on random port and it can be injected to your properties for seamless integration. 
 
-### Memory footprint
+#### Memory footprint
 
 Using MockServer for each test class can and will affect Spring context, since each Mock Server injects own properties into it. 
 This is dirty the context and force Spring to rebuild the context. Contexts are held in a Context Cache. 
@@ -20,7 +34,7 @@ will be overridden in the cache.
 To reduce the cache size, create a spring.properties file in test scope resources directory. Inside that file add property
 `spring.test.context.cache.maxSize=2`. 
 
-### Example of general setup
+#### Example of general setup
 
 ```
 @SpringBootTest(classes = {TestSpringApplication.class})
@@ -39,7 +53,7 @@ class HammasBookingApiCreateBookingTest {
 }
 ```
 
-### Example definition of mock request
+#### Example definition of mock request
 
 ```
         server.mock(
@@ -55,7 +69,7 @@ For reach request mock, you have specify the HTTP method and path where the requ
 These parameters can be supplied to constructor as default values, then you don't have to specify these
 values for every test.
 
-## MockMvc Response expectation helpers
+### MockMvc Response expectation helpers
 
 Given library provides a set of assertion helpers that correspond to the typical responses defined in
 [Bitweb core library](https://bitbucket.bitweb.ee/projects/BITWEB/repos/java-core-lib/browse)
@@ -77,6 +91,12 @@ Example usage:
                 )
         );
 ```
+
+## Release notes
+
+### 2.0.0
+
+Update dependencies for Spring Framework 6
 
 ### 1.2.2
 
