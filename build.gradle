@@ -40,13 +40,13 @@ dependencies {
     implementation group: 'org.json', name: 'json', version: '20240303'
 
     // https://mvnrepository.com/artifact/org.springframework/spring-test
-    implementation group: 'org.springframework', name: 'spring-test', version: '6.1.11'
+    implementation group: 'org.springframework', name: 'spring-test', version: '6.1.12'
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.3'
+    implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.11.0'
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.3'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.11.0'
 }
 
 task copyDependencies(type: Copy) {
