@@ -9,7 +9,7 @@ Given library has helper functions that make it a bit easier to test various fun
 
 ```
 // https://mvnrepository.com/artifact/ee.bitweb/spring-test-core
-testImplementation group: 'ee.bitweb', name: 'spring-test-core', version: '2.0.0'
+testImplementation group: 'ee.bitweb', name: 'spring-test-core', version: '2.0.1'
 ```
 
 Review available versions in [Maven Central](https://mvnrepository.com/artifact/ee.bitweb/spring-test-core).
