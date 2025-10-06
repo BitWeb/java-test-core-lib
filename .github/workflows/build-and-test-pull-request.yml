@@ -2,6 +2,8 @@ name: Build and test Java Test Library
 
 on:
   pull_request:
+  pull_request_target: # Use pull_request_target so Dependabot PRs can run with repo context (secrets available)
+    branches: [ "master" ]
   push:
     branches: [ "master" ]
   workflow_dispatch:
@@ -25,7 +27,41 @@ jobs:
         run: ./gradlew build -x test
 
       - name: Run Sonar analysis
+        # Skip Sonar on Dependabot in pull_request runs (no secrets there); handled by a separate job below
+        if: github.actor != 'dependabot[bot]'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: ./gradlew sonar -x test --no-watch-fs
+
+  # Separate job to safely run Sonar on Dependabot PRs using pull_request_target context
+  sonar-dependabot:
+    name: Sonar (Dependabot PRs)
+    # Only run when the event is pull_request_target and the actor is Dependabot
+    if: github.event_name == 'pull_request_target' && github.actor == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      checks: write
+    steps:
+      # IMPORTANT: pull_request_target defaults to checking out the base branch; explicitly use the PR HEAD SHA
+      - name: Checkout PR HEAD
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Build (no tests)
+        run: ./gradlew assemble -x test  # Prepare artifacts if your sonar config expects compiled classes
+
+      - name: Sonar analysis (Dependabot)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Secrets are available in PR_TARGET context
         run: ./gradlew sonar -x test --no-watch-fs
