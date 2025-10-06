@@ -10,7 +10,7 @@ buildscript {
 plugins {
     id 'java'
     id 'jacoco'
-    id "org.owasp.dependencycheck" version "12.1.1"
+    id "org.owasp.dependencycheck" version "12.1.6"
     id "io.github.gradle-nexus.publish-plugin" version "2.0.0"
 }
 
@@ -29,7 +29,7 @@ repositories {
 
 dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
-    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.38'
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: '1.18.42'
 
     // https://mvnrepository.com/artifact/org.mock-server/mockserver-netty
     implementation ("org.mock-server:mockserver-netty:5.15.0") {
@@ -40,7 +40,7 @@ dependencies {
     implementation group: 'org.json', name: 'json', version: '20250517'
 
     // https://mvnrepository.com/artifact/org.springframework/spring-test
-    implementation group: 'org.springframework', name: 'spring-test', version: '6.2.7'
+    implementation group: 'org.springframework', name: 'spring-test', version: '6.2.11'
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.13.0'
