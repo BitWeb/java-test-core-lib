@@ -10,7 +10,7 @@ buildscript {
 plugins {
     id 'java'
     id 'jacoco'
-    id "org.owasp.dependencycheck" version "12.1.6"
+    id "org.owasp.dependencycheck" version "12.1.8"
     id "io.github.gradle-nexus.publish-plugin" version "2.0.0"
 }
 
@@ -40,7 +40,7 @@ dependencies {
     implementation group: 'org.json', name: 'json', version: '20250517'
 
     // https://mvnrepository.com/artifact/org.springframework/spring-test
-    implementation group: 'org.springframework', name: 'spring-test', version: '6.2.11'
+    implementation group: 'org.springframework', name: 'spring-test', version: '6.2.12'
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
     implementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.13.0'
